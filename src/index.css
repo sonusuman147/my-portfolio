@@ -1,0 +1,268 @@
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600;1,700&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --bg: #080D18;
+  --bg-elevated: #0F1526;
+  --bg-elevated-2: #121A2D;
+  --text: #EDEFF6;
+  --text-muted: #8D97B4;
+  --border: rgba(237, 239, 246, 0.10);
+  --border-strong: rgba(237, 239, 246, 0.18);
+  --accent: #F2A93B;
+  --accent-soft: rgba(242, 169, 59, 0.14);
+  --accent-2: #35C9C1;
+  --accent-2-soft: rgba(53, 201, 193, 0.14);
+  --accent-3: #8b5cf6;
+  --accent-4: #f97316;
+  --grid-line: rgba(237, 239, 246, 0.04);
+  color-scheme: dark;
+}
+
+html.light {
+  --bg: #F6F5F0;
+  --bg-elevated: #FFFFFF;
+  --bg-elevated-2: #EFEDE5;
+  --text: #0C1122;
+  --text-muted: #565F7A;
+  --border: rgba(12, 17, 34, 0.10);
+  --border-strong: rgba(12, 17, 34, 0.18);
+  --accent: #C97A16;
+  --accent-soft: rgba(201, 122, 22, 0.12);
+  --accent-2: #128077;
+  --accent-2-soft: rgba(18, 128, 119, 0.12);
+  --accent-3: #6d28d9;
+  --accent-4: #ea580c;
+  --grid-line: rgba(12, 17, 34, 0.04);
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Inter', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.35s ease, color 0.35s ease;
+}
+
+::selection {
+  background: var(--accent);
+  color: #080D18;
+}
+
+/* tabular numerals everywhere numbers are used */
+.tnum {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+/* focus visibility */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--bg);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--border-strong);
+  border-radius: 8px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s cubic-bezier(.2,.7,.2,1), transform 0.7s cubic-bezier(.2,.7,.2,1);
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal.is-visible .timeline-line {
+  transform: scaleY(1);
+}
+
+/* ---------- Smooth, global theme transition ---------- */
+/* Lower specificity than any Tailwind utility class, so hover/transform
+   transitions defined on individual elements always take precedence. */
+*, *::before, *::after {
+  transition: background-color 0.4s ease, border-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* ---------- Custom cursor (desktop only) ---------- */
+body.custom-cursor-active,
+body.custom-cursor-active a,
+body.custom-cursor-active button {
+  cursor: none;
+}
+
+.cursor-glow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 500px;
+  height: 500px;
+  margin-left: -250px;
+  margin-top: -250px;
+  border-radius: 9999px;
+  background: radial-gradient(circle at center, #3b82f6 0%, #06b6d4 20%, #8b5cf6 40%, #f97316 60%, transparent 75%);
+  opacity: 0.12;
+  pointer-events: none;
+  z-index: 30;
+  will-change: transform;
+  filter: blur(40px);
+}
+
+html.light .cursor-glow {
+  opacity: 0.05;
+}
+
+.cursor-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 6px;
+  height: 6px;
+  margin-left: -3px;
+  margin-top: -3px;
+  border-radius: 9999px;
+  background: var(--text);
+  pointer-events: none;
+  z-index: 60;
+  transition: width 0.4s cubic-bezier(0.16, 1, 0.3, 1), height 0.4s cubic-bezier(0.16, 1, 0.3, 1), margin 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease, background-color 0.3s ease;
+  will-change: transform;
+}
+
+.cursor-dot.is-active {
+  width: 44px;
+  height: 44px;
+  margin-left: -22px;
+  margin-top: -22px;
+  background: transparent;
+  border: 1px solid var(--text-muted);
+  opacity: 0.7;
+}
+
+/* ---------- Keyframes ---------- */
+@keyframes bg-pan-x {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.animate-pan-x {
+  animation: bg-pan-x 8s ease infinite;
+  background-size: 200% 200%;
+}
+
+.btn-glow {
+  position: relative;
+  overflow: hidden;
+}
+.btn-glow::after {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 60%);
+  opacity: 0;
+  transform: scale(0.5);
+  transition: opacity 0.4s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  pointer-events: none;
+}
+.btn-glow:hover::after {
+  opacity: 1;
+  transform: scale(1);
+}
+
+@keyframes fadeSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.stagger-in {
+  opacity: 0;
+  animation: fadeSlideUp 0.65s cubic-bezier(.2,.7,.2,1) forwards;
+}
+
+@keyframes floatCard {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-8px);
+  }
+}
+
+.float-idle {
+  animation: floatCard 5.5s ease-in-out infinite;
+}
+
+@keyframes pulseDot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.35; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cursor-glow,
+  .cursor-dot {
+    display: none;
+  }
+  .stagger-in {
+    opacity: 1;
+    animation: none;
+  }
+  .float-idle {
+    animation: none;
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .cursor-glow,
+  .cursor-dot {
+    display: none;
+  }
+}
