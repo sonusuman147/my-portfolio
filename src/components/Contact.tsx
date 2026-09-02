@@ -1,84 +1,188 @@
-import { Mail, ArrowUpRight } from "lucide-react";
-import { GithubIcon, LinkedinIcon, InstagramIcon, TwitterIcon } from "./icons/BrandIcons";
-import { profile } from "../data/portfolio";
+import { useState, useEffect } from "react";
+import { CheckCircle2 } from "lucide-react";
 import Reveal from "./Reveal";
 
-const links = [
-  { label: "Email", value: profile.email, href: `mailto:${profile.email}`, icon: Mail },
-  { label: "GitHub", value: "github.com/sonusuman147", href: profile.social.github, icon: GithubIcon },
-  {
-    label: "LinkedIn",
-    value: "linkedin.com/in/sonu-suman-ojha",
-    href: profile.social.linkedin,
-    icon: LinkedinIcon,
-  },
-  {
-    label: "Instagram",
-    value: "instagram.com/nxt__sonu__",
-    href: profile.social.instagram,
-    icon: InstagramIcon,
-  },
-  { label: "X / Twitter", value: "x.com/SonusumanO", href: profile.social.twitter, icon: TwitterIcon },
-];
-
 export default function Contact() {
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const [errors, setErrors] = useState({
+    name: "",
+    email: "",
+    message: "",
+  });
+
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
+
+  useEffect(() => {
+    let timer: NodeJS.Timeout;
+    if (isSuccess) {
+      timer = setTimeout(() => {
+        setIsSuccess(false);
+      }, 5000);
+    }
+    return () => clearTimeout(timer);
+  }, [isSuccess]);
+
+  const validate = () => {
+    let isValid = true;
+    const newErrors = { name: "", email: "", message: "" };
+
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required";
+      isValid = false;
+    }
+
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required";
+      isValid = false;
+    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      newErrors.email = "Please enter a valid email address";
+      isValid = false;
+    }
+
+    if (!formData.message.trim()) {
+      newErrors.message = "Message is required";
+      isValid = false;
+    }
+
+    setErrors(newErrors);
+    return isValid;
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!validate()) return;
+
+    setIsSubmitting(true);
+
+    // Simulate API call since there's no existing backend
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+
+    setIsSubmitting(false);
+    setIsSuccess(true);
+    setFormData({ name: "", email: "", message: "" });
+  };
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errors[name as keyof typeof errors]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }));
+    }
+  };
+
   return (
-    <section id="contact" className="py-24 md:py-40 border-t border-edge relative overflow-hidden">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+    <section id="contact" className="py-20 md:py-32 border-t border-edge relative overflow-hidden">
+      <div className="mx-auto max-w-[900px] w-[90%] relative">
         <Reveal>
-          <div className="text-center mb-16 md:mb-24">
-            <div className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-8">
+          <div className="mb-10 md:mb-12 flex flex-col items-center text-center">
+            <div className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-6 text-center">
               07 — CONTACT
             </div>
-            <a 
-              href={`mailto:${profile.email}`}
-              className="cursor-interactive inline-block group relative"
-            >
-              <h2 className="font-display text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-medium tracking-tighter text-ink transition-colors duration-500 group-hover:text-transparent group-hover:bg-clip-text group-hover:bg-gradient-to-r group-hover:from-accent group-hover:to-accent3">
-                LET'S WORK<br/>
-                <span className="font-editorial italic">TOGETHER</span>
-              </h2>
-              <div className="absolute -bottom-6 left-1/2 -translate-x-1/2 w-0 h-[2px] bg-accent transition-all duration-500 group-hover:w-full" />
-            </a>
+            <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-medium tracking-tighter text-ink mb-6">
+              Contact Me
+            </h2>
+            <p className="max-w-2xl text-lg sm:text-xl leading-relaxed text-muted text-center">
+              Have a question or want to get in touch? Fill out the form below and I'll get back to you as soon as possible.
+            </p>
           </div>
         </Reveal>
 
         <Reveal delay={100}>
-          <p className="max-w-xl mx-auto text-center text-lg sm:text-xl leading-relaxed text-ink mb-16">
-            Open to internships, entry-level data analytics roles, and interesting
-            collaborations.
-          </p>
-        </Reveal>
+          <div className="relative max-w-[700px] mx-auto">
+            <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-r from-[#8b5cf6]/5 via-accent2/5 to-[#8b5cf6]/5 blur-2xl opacity-40 pointer-events-none animate-pan-x" />
+            
+            <div className="relative">
+              <form onSubmit={handleSubmit} className="space-y-6">
+                <div>
+                  <label htmlFor="name" className="block text-sm font-medium text-ink mb-2">
+                    Name
+                  </label>
+                  <input
+                    type="text"
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="Your name..."
+                    className={`w-full bg-surface border ${
+                      errors.name ? "border-red-500" : "border-edge2"
+                    } rounded-xl px-4 py-3 text-ink placeholder:text-muted focus:outline-none focus:border-accent transition-colors`}
+                  />
+                  {errors.name && (
+                    <p className="text-red-500 text-xs mt-1.5">{errors.name}</p>
+                  )}
+                </div>
 
-        <div className="relative max-w-3xl mx-auto">
-          <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-r from-[#8b5cf6]/10 via-accent2/10 to-[#8b5cf6]/10 blur-2xl opacity-50 pointer-events-none animate-pan-x" />
-          <div className="relative grid sm:grid-cols-2 lg:grid-cols-5 gap-3">
-            {links.map((l, i) => (
-            <Reveal key={l.label} delay={i * 60} className={l.label === "Email" ? "lg:col-span-5 mb-3" : "lg:col-span-2"}>
-              <a
-                href={l.href}
-                target={l.href.startsWith("http") ? "_blank" : undefined}
-                rel={l.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                className={`cursor-interactive group flex items-center justify-between gap-3 rounded-2xl border border-edge2 bg-surface px-5 py-4 transition-all duration-300 ease-out hover:-translate-y-1.5 hover:border-accent/50 hover:shadow-xl hover:shadow-accent/5 ${l.label === 'Email' ? 'btn-glow' : ''}`}
-              >
-                <span className="flex items-center gap-4">
-                  <span className="h-10 w-10 grid place-items-center rounded-full bg-surface2 text-ink transition-all duration-300 group-hover:scale-110 group-hover:text-accent group-hover:bg-accentSoft">
-                    <l.icon size={18} />
-                  </span>
-                  <span className="text-left">
-                    <span className="block text-xs font-mono text-muted mb-0.5">{l.label}</span>
-                    <span className="block text-[15px] font-medium text-ink transition-colors group-hover:text-accent2">{l.value}</span>
-                  </span>
-                </span>
-                <ArrowUpRight
-                  size={18}
-                  className="text-muted transition-all duration-300 group-hover:text-accent group-hover:translate-x-1 group-hover:-translate-y-1 group-hover:scale-110"
-                />
-              </a>
-            </Reveal>
-          ))}
+                <div>
+                  <label htmlFor="email" className="block text-sm font-medium text-ink mb-2">
+                    Email
+                  </label>
+                  <input
+                    type="email"
+                    id="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="your.email@example.com..."
+                    className={`w-full bg-surface border ${
+                      errors.email ? "border-red-500" : "border-edge2"
+                    } rounded-xl px-4 py-3 text-ink placeholder:text-muted focus:outline-none focus:border-accent transition-colors`}
+                  />
+                  {errors.email && (
+                    <p className="text-red-500 text-xs mt-1.5">{errors.email}</p>
+                  )}
+                </div>
+
+                <div>
+                  <label htmlFor="message" className="block text-sm font-medium text-ink mb-2">
+                    Message
+                  </label>
+                  <textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    placeholder="Your message..."
+                    rows={6}
+                    className={`w-full bg-surface border ${
+                      errors.message ? "border-red-500" : "border-edge2"
+                    } rounded-xl px-4 py-3 text-ink placeholder:text-muted focus:outline-none focus:border-accent transition-colors resize-y`}
+                  />
+                  {errors.message && (
+                    <p className="text-red-500 text-xs mt-1.5">{errors.message}</p>
+                  )}
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full bg-ink text-bg font-medium py-3 px-6 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-ink/10 disabled:opacity-70 disabled:hover:translate-y-0"
+                >
+                  {isSubmitting ? "Sending..." : "Send Message"}
+                </button>
+              </form>
+
+              {isSuccess && (
+                <div className="mt-4 flex items-center justify-center gap-2 text-green-500 bg-green-500/10 py-3 px-4 rounded-xl border border-green-500/20 stagger-in">
+                  <CheckCircle2 size={18} className="shrink-0" />
+                  <div className="text-sm">
+                    <span className="font-medium mr-1">Message Sent Successfully!</span> 
+                    <span className="opacity-80">Thank you for your message. I'll get back to you as soon as possible.</span>
+                  </div>
+                </div>
+              )}
+            </div>
           </div>
-        </div>
+        </Reveal>
       </div>
     </section>
   );
