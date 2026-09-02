@@ -17,6 +17,7 @@ export default function Contact() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState("");
 
   useEffect(() => {
     let timer: ReturnType<typeof setTimeout>;
@@ -60,13 +61,36 @@ export default function Contact() {
     if (!validate()) return;
 
     setIsSubmitting(true);
+    setSubmitError("");
 
-    // Simulate API call since there's no existing backend
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      const response = await fetch("https://api.web3forms.com/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+        },
+        body: JSON.stringify({
+          access_key: "eeade02b-9617-4441-b674-3ac7176e80e6",
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+        }),
+      });
 
-    setIsSubmitting(false);
-    setIsSuccess(true);
-    setFormData({ name: "", email: "", message: "" });
+      const result = await response.json();
+
+      if (response.status === 200) {
+        setIsSuccess(true);
+        setFormData({ name: "", email: "", message: "" });
+      } else {
+        setSubmitError(result.message || "Something went wrong. Please try again.");
+      }
+    } catch (error) {
+      setSubmitError("Failed to send message. Please try again later.");
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const handleChange = (
@@ -178,6 +202,12 @@ export default function Contact() {
                     <span className="font-medium mr-1">Message Sent Successfully!</span> 
                     <span className="opacity-80">Thank you for your message. I'll get back to you as soon as possible.</span>
                   </div>
+                </div>
+              )}
+
+              {submitError && (
+                <div className="mt-4 text-red-500 bg-red-500/10 py-3 px-4 rounded-xl border border-red-500/20 text-sm text-center stagger-in">
+                  {submitError}
                 </div>
               )}
             </div>
