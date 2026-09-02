@@ -19,7 +19,7 @@ export default function Contact() {
   const [isSuccess, setIsSuccess] = useState(false);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: ReturnType<typeof setTimeout>;
     if (isSuccess) {
       timer = setTimeout(() => {
         setIsSuccess(false);
