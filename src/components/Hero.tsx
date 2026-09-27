@@ -47,14 +47,8 @@ export default function Hero() {
     <section
       id="home"
       ref={heroRef}
-      className="relative min-h-[100dvh] lg:min-h-screen flex items-center pt-20 lg:pt-24 pb-12 lg:pb-16 overflow-hidden bg-[#060913]"
+      className="relative w-full flex items-center pt-24 md:pt-0 md:min-h-[100dvh] pb-16 md:pb-0 overflow-hidden bg-[#060913]"
     >
-      {/* Background Cosmic Radial Glow behind photo */}
-      <div
-        className="absolute right-[-10%] lg:right-[5%] top-1/2 -translate-y-1/2 w-[340px] sm:w-[520px] lg:w-[640px] h-[340px] sm:h-[520px] lg:h-[640px] rounded-full bg-gradient-to-tr from-[#0284c7]/30 via-[#38bdf8]/20 to-[#6366f1]/25 blur-3xl pointer-events-none -z-10 animate-pulse"
-        style={{ animationDuration: "8s" }}
-      />
-
       {/* Interactive Cinematic Highlight */}
       {isFine && (
         <div
@@ -76,12 +70,12 @@ export default function Hero() {
         }}
       />
 
-      <div className="mx-auto w-full max-w-7xl px-4 sm:px-8 relative z-20 flex flex-col lg:flex-row items-center justify-between gap-8 lg:gap-12 my-auto">
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-8 relative z-20 flex flex-col md:flex-row md:items-center justify-between gap-10 md:gap-12 my-auto">
 
         {/* Left Column: Hero Text Content */}
-        <div className="w-full lg:w-[58%] pt-2 sm:pt-6 lg:pt-0 z-20">
+        <div className="w-full md:w-[55%] lg:w-[58%] pt-2 sm:pt-6 md:pt-0 z-20 flex flex-col">
           <div
-            className="stagger-in flex items-center gap-3 text-xs font-mono tracking-[0.25em] text-[#38bdf8] uppercase mb-4 sm:mb-6"
+            className="stagger-in flex items-center gap-3 text-[11px] sm:text-xs font-mono tracking-[0.25em] text-[#38bdf8] uppercase mb-4 sm:mb-6"
             style={{ animationDelay: `${DELAY.badge}ms` }}
           >
             <span className="h-[2px] w-6 sm:w-10 bg-[#38bdf8]/60" />
@@ -89,22 +83,22 @@ export default function Hero() {
           </div>
 
           <h1
-            className="stagger-in font-editorial italic font-normal text-4xl xs:text-5xl sm:text-7xl lg:text-[7.5rem] xl:text-[8.5rem] leading-[0.92] sm:leading-[0.88] tracking-tight text-[#f1f5f9] drop-shadow-lg break-words"
+            className="stagger-in font-editorial italic font-normal text-[3.25rem] leading-[0.95] xs:text-[4rem] sm:text-[5.5rem] md:text-[6rem] lg:text-[7.5rem] xl:text-[8.5rem] md:leading-[0.88] tracking-tight text-[#f1f5f9] drop-shadow-lg break-words"
             style={{ animationDelay: `${DELAY.name}ms` }}
           >
             Sonu Suman <br />
-            <span className="pl-4 xs:pl-8 sm:pl-16 not-italic font-editorial italic text-[#e0f2fe]">Ojha</span>
+            <span className="pl-6 xs:pl-8 sm:pl-12 md:pl-16 not-italic font-editorial italic text-[#e0f2fe]">Ojha</span>
           </h1>
 
           <p
-            className="stagger-in mt-4 sm:mt-6 font-mono text-xs xs:text-sm sm:text-base text-[#94a3b8] max-w-xl leading-relaxed"
+            className="stagger-in mt-4 sm:mt-6 font-mono text-xs sm:text-sm md:text-base text-[#94a3b8] max-w-xl leading-relaxed"
             style={{ animationDelay: `${DELAY.subtitle}ms` }}
           >
             {profile.headline}
           </p>
 
           <p
-            className="stagger-in mt-3 sm:mt-5 max-w-xl text-xs xs:text-sm sm:text-[15px] leading-relaxed text-gray-400"
+            className="stagger-in mt-3 sm:mt-5 max-w-xl text-[13px] sm:text-sm md:text-[15px] leading-relaxed text-gray-400"
             style={{ animationDelay: `${DELAY.description}ms` }}
           >
             {profile.intro}
@@ -112,13 +106,13 @@ export default function Hero() {
 
           {/* Buttons Row */}
           <div
-            className="stagger-in mt-6 sm:mt-8 flex flex-row items-center gap-3 sm:gap-4 flex-wrap"
+            className="stagger-in mt-8 sm:mt-10 flex flex-row items-center gap-3 sm:gap-4 flex-wrap"
             style={{ animationDelay: `${DELAY.buttons}ms` }}
           >
             <Magnetic strength={6}>
               <a
                 href="#projects"
-                className="btn-glow group inline-flex items-center justify-center gap-2 rounded-lg bg-[#0284c7] hover:bg-[#0369a1] text-white px-6 sm:px-7 py-3 sm:py-3.5 text-xs sm:text-[13px] font-mono font-semibold tracking-wider uppercase transition-all duration-300 shadow-lg shadow-[#0284c7]/30 hover:scale-[1.02] active:scale-[0.98]"
+                className="btn-glow group inline-flex items-center justify-center gap-2 rounded-lg bg-[#0284c7] hover:bg-[#0369a1] text-white px-5 sm:px-7 py-3 sm:py-3.5 text-[11px] sm:text-[13px] font-mono font-semibold tracking-wider uppercase transition-all duration-300 shadow-lg shadow-[#0284c7]/30 hover:scale-[1.02] active:scale-[0.98]"
               >
                 View Work
                 <ArrowDown
@@ -132,7 +126,7 @@ export default function Hero() {
               <a
                 href={resumeFile}
                 download="Sonu_Suman_Ojha_Resume.pdf"
-                className="btn-glow group inline-flex items-center justify-center gap-2 rounded-lg border border-slate-700/80 bg-[#0f172a]/70 hover:bg-[#1e293b] text-slate-200 px-5 sm:px-6 py-3 sm:py-3.5 text-xs sm:text-[13px] font-mono font-medium tracking-wider uppercase transition-all duration-300 hover:border-slate-500 hover:scale-[1.02] active:scale-[0.98]"
+                className="btn-glow group inline-flex items-center justify-center gap-2 rounded-lg border border-slate-700/80 bg-[#0f172a]/70 hover:bg-[#1e293b] text-slate-200 px-5 sm:px-6 py-3 sm:py-3.5 text-[11px] sm:text-[13px] font-mono font-medium tracking-wider uppercase transition-all duration-300 hover:border-slate-500 hover:scale-[1.02] active:scale-[0.98]"
               >
                 <FileDown size={14} className="transition-transform duration-300 group-hover:-translate-y-0.5" />
                 Resume
@@ -142,7 +136,7 @@ export default function Hero() {
 
           {/* Social Icons */}
           <div
-            className="stagger-in mt-8 sm:mt-10 flex items-center gap-4 sm:gap-5 flex-wrap"
+            className="stagger-in mt-8 sm:mt-10 flex items-center gap-4 sm:gap-5 flex-wrap pb-2 md:pb-0"
             style={{ animationDelay: `${DELAY.socials}ms` }}
           >
             {socialLinks.map(({ href, label, icon: Icon }) => (
@@ -152,7 +146,7 @@ export default function Hero() {
                   target={href.startsWith("http") ? "_blank" : undefined}
                   rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
                   aria-label={label}
-                  className="text-slate-400 transition-all duration-300 hover:scale-110 hover:text-[#38bdf8] p-1"
+                  className="text-slate-400 transition-all duration-300 hover:scale-110 hover:text-[#38bdf8] p-1 block"
                 >
                   <Icon size={19} />
                 </a>
@@ -163,26 +157,19 @@ export default function Hero() {
 
         {/* Right Column: Vivid Profile Photo with Glow Aura */}
         <div
-          className="w-full lg:w-[42%] flex justify-center lg:justify-end z-10 pointer-events-none relative lg:static"
+          className="w-full md:w-[45%] lg:w-[42%] flex justify-center md:justify-end z-10 relative mt-10 sm:mt-14 md:mt-0 pointer-events-none"
           style={isFine ? {
             transform: `translate3d(${(mousePos.x - (typeof window !== 'undefined' ? window.innerWidth : 1000) / 2) * -0.012}px, ${(mousePos.y - (typeof window !== 'undefined' ? window.innerHeight : 800) / 2) * -0.012}px, 0)`
           } : undefined}
         >
-          {/* Mobile Overlay Background Photo positioning */}
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-full max-w-[340px] sm:max-w-[440px] lg:hidden opacity-35 pointer-events-none -z-10 overflow-hidden">
-            <img
-              src={profileImg}
-              alt=""
-              className="w-full h-auto object-cover rounded-full filter saturate-110 contrast-105 mask-radial"
-              style={{
-                maskImage: "radial-gradient(circle at center, black 40%, transparent 80%)",
-                WebkitMaskImage: "radial-gradient(circle at center, black 40%, transparent 80%)",
-              }}
-            />
-          </div>
+          {/* Background Cosmic Radial Glow behind photo (moved here for responsive alignment) */}
+          <div
+            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110%] aspect-square rounded-full bg-gradient-to-tr from-[#0284c7]/30 via-[#38bdf8]/20 to-[#6366f1]/25 blur-[60px] md:blur-[80px] pointer-events-none -z-10 animate-pulse"
+            style={{ animationDuration: "8s" }}
+          />
 
-          {/* Desktop Framed Portrait Photo */}
-          <div className="hidden lg:block relative w-full max-w-[460px] aspect-[4/5] rounded-3xl overflow-hidden border border-slate-700/40 shadow-2xl shadow-sky-500/10">
+          {/* Portrait Photo */}
+          <div className="relative w-[82%] sm:w-[70%] max-w-[320px] md:w-full md:max-w-[460px] aspect-[4/5] rounded-3xl overflow-hidden border border-slate-700/40 shadow-2xl shadow-sky-500/10 pointer-events-auto">
             {/* Ambient Cosmic Background Ring behind portrait */}
             <div className="absolute inset-0 bg-gradient-to-b from-sky-500/15 via-indigo-500/10 to-transparent pointer-events-none" />
 
@@ -194,10 +181,9 @@ export default function Hero() {
             />
 
             {/* Soft Subtle Bottom Edge Fade */}
-            <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-[#060913] to-transparent" />
-            <div className="absolute inset-x-0 top-0 h-12 bg-gradient-to-b from-[#060913]/40 to-transparent" />
+            <div className="absolute inset-x-0 bottom-0 h-16 md:h-24 bg-gradient-to-t from-[#060913] to-transparent pointer-events-none" />
+            <div className="absolute inset-x-0 top-0 h-10 md:h-12 bg-gradient-to-b from-[#060913]/40 to-transparent pointer-events-none" />
           </div>
-
         </div>
 
       </div>
