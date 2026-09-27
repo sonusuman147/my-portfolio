@@ -15,19 +15,19 @@ const icons = [
 export default function Footer() {
   const year = new Date().getFullYear();
   return (
-    <footer className="border-t border-edge py-10">
+    <footer className="border-t border-edge py-8 sm:py-10">
       <Reveal>
-        <div className="mx-auto max-w-7xl px-5 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-5">
+        <div className="mx-auto max-w-7xl px-4 sm:px-8 flex flex-col sm:flex-row items-center justify-between gap-4 sm:gap-5">
           <div className="text-center sm:text-left font-mono">
-            <p className="text-sm text-ink">
+            <p className="text-xs sm:text-sm text-ink">
               © {year} {profile.name}.
             </p>
-            <p className="text-xs text-muted mt-1 flex items-center justify-center sm:justify-start gap-2">
+            <p className="text-[11px] sm:text-xs text-muted mt-1 flex items-center justify-center sm:justify-start gap-2">
               <span className="h-1.5 w-1.5 rounded-full bg-accent animate-pulse" />
               SYSTEM.ONLINE
             </p>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap justify-center">
             {icons.map(({ href, label, icon: Icon }) => (
               <Magnetic key={label} strength={8}>
                 <a

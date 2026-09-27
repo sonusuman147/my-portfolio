@@ -104,17 +104,17 @@ export default function Contact() {
   };
 
   return (
-    <section id="contact" className="py-20 md:py-32 border-t border-edge relative overflow-hidden">
-      <div className="mx-auto max-w-[900px] w-[90%] relative">
+    <section id="contact" className="py-16 sm:py-24 md:py-32 border-t border-edge relative overflow-hidden">
+      <div className="mx-auto max-w-[900px] w-full px-4 sm:px-8 relative">
         <Reveal>
-          <div className="mb-10 md:mb-12 flex flex-col items-center text-center">
-            <div className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-6 text-center">
+          <div className="mb-8 sm:mb-12 flex flex-col items-center text-center">
+            <div className="font-mono text-xs uppercase tracking-[0.2em] text-muted mb-4 sm:mb-6 text-center">
               07 — CONTACT
             </div>
-            <h2 className="font-display text-4xl sm:text-5xl md:text-6xl font-medium tracking-tighter text-ink mb-6">
+            <h2 className="font-display text-3xl xs:text-4xl sm:text-5xl md:text-6xl font-medium tracking-tighter text-ink mb-4 sm:mb-6">
               Contact Me
             </h2>
-            <p className="max-w-2xl text-lg sm:text-xl leading-relaxed text-muted text-center">
+            <p className="max-w-2xl text-sm xs:text-base sm:text-xl leading-relaxed text-muted text-center">
               Have a question or want to get in touch? Fill out the form below and I'll get back to you as soon as possible.
             </p>
           </div>
@@ -122,12 +122,12 @@ export default function Contact() {
 
         <Reveal delay={100}>
           <div className="relative max-w-[700px] mx-auto">
-            <div className="absolute -inset-6 rounded-[2rem] bg-gradient-to-r from-[#8b5cf6]/5 via-accent2/5 to-[#8b5cf6]/5 blur-2xl opacity-40 pointer-events-none animate-pan-x" />
+            <div className="absolute -inset-2 sm:-inset-6 rounded-[2rem] bg-gradient-to-r from-[#8b5cf6]/5 via-accent2/5 to-[#8b5cf6]/5 blur-xl sm:blur-2xl opacity-40 pointer-events-none animate-pan-x" />
             
             <div className="relative">
-              <form onSubmit={handleSubmit} className="space-y-6">
+              <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
                 <div>
-                  <label htmlFor="name" className="block text-sm font-medium text-ink mb-2">
+                  <label htmlFor="name" className="block text-xs sm:text-sm font-medium text-ink mb-1.5 sm:mb-2">
                     Name
                   </label>
                   <input
@@ -139,7 +139,7 @@ export default function Contact() {
                     placeholder="Your name..."
                     className={`w-full bg-surface border ${
                       errors.name ? "border-red-500" : "border-edge2"
-                    } rounded-xl px-4 py-3 text-ink placeholder:text-muted focus:outline-none focus:border-accent transition-colors`}
+                    } rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-sm text-ink placeholder:text-muted focus:outline-none focus:border-accent transition-colors`}
                   />
                   {errors.name && (
                     <p className="text-red-500 text-xs mt-1.5">{errors.name}</p>
@@ -147,7 +147,7 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label htmlFor="email" className="block text-sm font-medium text-ink mb-2">
+                  <label htmlFor="email" className="block text-xs sm:text-sm font-medium text-ink mb-1.5 sm:mb-2">
                     Email
                   </label>
                   <input
@@ -159,7 +159,7 @@ export default function Contact() {
                     placeholder="your.email@example.com..."
                     className={`w-full bg-surface border ${
                       errors.email ? "border-red-500" : "border-edge2"
-                    } rounded-xl px-4 py-3 text-ink placeholder:text-muted focus:outline-none focus:border-accent transition-colors`}
+                    } rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-sm text-ink placeholder:text-muted focus:outline-none focus:border-accent transition-colors`}
                   />
                   {errors.email && (
                     <p className="text-red-500 text-xs mt-1.5">{errors.email}</p>
@@ -167,7 +167,7 @@ export default function Contact() {
                 </div>
 
                 <div>
-                  <label htmlFor="message" className="block text-sm font-medium text-ink mb-2">
+                  <label htmlFor="message" className="block text-xs sm:text-sm font-medium text-ink mb-1.5 sm:mb-2">
                     Message
                   </label>
                   <textarea
@@ -176,10 +176,10 @@ export default function Contact() {
                     value={formData.message}
                     onChange={handleChange}
                     placeholder="Your message..."
-                    rows={6}
+                    rows={5}
                     className={`w-full bg-surface border ${
                       errors.message ? "border-red-500" : "border-edge2"
-                    } rounded-xl px-4 py-3 text-ink placeholder:text-muted focus:outline-none focus:border-accent transition-colors resize-y`}
+                    } rounded-xl px-3.5 sm:px-4 py-2.5 sm:py-3 text-sm text-ink placeholder:text-muted focus:outline-none focus:border-accent transition-colors resize-y`}
                   />
                   {errors.message && (
                     <p className="text-red-500 text-xs mt-1.5">{errors.message}</p>
@@ -189,7 +189,7 @@ export default function Contact() {
                 <button
                   type="submit"
                   disabled={isSubmitting}
-                  className="w-full bg-ink text-bg font-medium py-3 px-6 rounded-xl transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-ink/10 disabled:opacity-70 disabled:hover:translate-y-0"
+                  className="w-full bg-ink text-bg font-medium py-3.5 px-6 rounded-xl text-sm sm:text-base transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-ink/10 disabled:opacity-70 disabled:hover:translate-y-0"
                 >
                   {isSubmitting ? "Sending..." : "Send Message"}
                 </button>

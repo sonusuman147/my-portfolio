@@ -75,14 +75,14 @@ export default function Game() {
   };
 
   return (
-    <section className="py-20 md:py-28 border-t border-edge relative overflow-hidden bg-surface/30">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+    <section className="py-14 sm:py-20 md:py-28 border-t border-edge relative overflow-hidden bg-surface/30">
+      <div className="mx-auto max-w-7xl px-4 sm:px-8">
         <Reveal>
-          <div className="text-center max-w-2xl mx-auto mb-12">
-            <h3 className="font-display text-3xl sm:text-4xl font-medium text-ink mb-3">
+          <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
+            <h3 className="font-display text-2xl xs:text-3xl sm:text-4xl font-medium text-ink mb-2 sm:mb-3">
               Take a break from the data.
             </h3>
-            <p className="text-sm text-muted font-mono">
+            <p className="text-xs sm:text-sm text-muted font-mono">
               Memory Match • {moves} moves
             </p>
           </div>
@@ -90,12 +90,12 @@ export default function Game() {
 
         <Reveal delay={100}>
           <div className="max-w-md mx-auto">
-            <div className="grid grid-cols-4 gap-3 sm:gap-4 mb-10 perspective-1000">
+            <div className="grid grid-cols-4 gap-2.5 xs:gap-3 sm:gap-4 mb-8 sm:mb-10 perspective-1000">
               {cards.map((card, idx) => (
                 <button
                   key={card.id}
                   onClick={() => handleCardClick(idx)}
-                  className={`cursor-interactive relative aspect-square rounded-xl flex items-center justify-center text-3xl transition-all duration-500 transform-style-3d ${
+                  className={`cursor-interactive relative aspect-square rounded-lg sm:rounded-xl flex items-center justify-center text-2xl sm:text-3xl transition-all duration-500 transform-style-3d ${
                     card.isFlipped || card.isMatched
                       ? "rotate-y-180 bg-surface2 border border-accent/40 shadow-inner"
                       : "bg-surface border border-edge2 hover:border-accent/30 hover:-translate-y-1 hover:shadow-md"
@@ -109,16 +109,16 @@ export default function Game() {
               ))}
             </div>
 
-            <div className="flex justify-center h-12">
+            <div className="flex justify-center min-h-[48px]">
               {won ? (
-                <div className="text-accent font-medium animate-fadeUp flex items-center gap-4 bg-accent/10 px-6 py-2.5 rounded-full border border-accent/20">
-                  <span>Great job! You won in {moves} moves.</span>
-                  <button onClick={initGame} className="cursor-interactive px-3 py-1 rounded-full bg-accent text-[#0B0F1C] text-xs font-semibold hover:scale-105 transition-transform">Play Again</button>
+                <div className="text-accent font-medium animate-fadeUp flex flex-col sm:flex-row items-center justify-center text-center gap-2.5 sm:gap-4 bg-accent/10 px-4 sm:px-6 py-3 sm:py-2.5 rounded-2xl sm:rounded-full border border-accent/20 w-full sm:w-auto">
+                  <span className="text-xs sm:text-sm">Great job! You won in {moves} moves.</span>
+                  <button onClick={initGame} className="cursor-interactive px-3.5 py-1.5 rounded-full bg-accent text-[#0B0F1C] text-xs font-semibold hover:scale-105 transition-transform shrink-0">Play Again</button>
                 </div>
               ) : (
                 <button
                   onClick={initGame}
-                  className="cursor-interactive px-6 py-2.5 rounded-full border border-edge2 text-sm text-muted hover:text-ink hover:border-edge transition-colors font-mono"
+                  className="cursor-interactive px-6 py-2.5 rounded-full border border-edge2 text-xs sm:text-sm text-muted hover:text-ink hover:border-edge transition-colors font-mono"
                 >
                   Restart Game
                 </button>

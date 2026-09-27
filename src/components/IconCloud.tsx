@@ -30,7 +30,7 @@ const ICONS = [
 export default function IconCloud() {
   return (
     <div className="absolute inset-0 overflow-hidden pointer-events-none z-0">
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-[600px] opacity-15">
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full max-w-4xl h-[600px] opacity-15 scale-50 sm:scale-75 md:scale-100 transition-transform duration-500">
         {ICONS.map(({ Icon, color, size, x, y, rotate, delay }, i) => (
           <motion.div
             key={i}

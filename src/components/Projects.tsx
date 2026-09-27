@@ -42,44 +42,44 @@ function ProjectLinks({ project }: { project: Project }) {
 function FeaturedCard({ project }: { project: Project }) {
   return (
     <Reveal>
-      <article className="cursor-interactive group rounded-3xl border border-edge2 bg-surface p-7 sm:p-10 relative overflow-hidden transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-2xl hover:shadow-accent/10 hover:border-accent/40">
+      <article className="cursor-interactive group rounded-2xl sm:rounded-3xl border border-edge2 bg-surface p-5 xs:p-6 sm:p-8 md:p-10 relative overflow-hidden transition-all duration-500 ease-out hover:-translate-y-2 hover:shadow-2xl hover:shadow-accent/10 hover:border-accent/40">
         <div
-          className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-accent/10 blur-[90px] transition-transform duration-500 group-hover:scale-125"
+          className="absolute -top-20 -right-20 h-64 w-64 rounded-full bg-accent/10 blur-[90px] transition-transform duration-500 group-hover:scale-125 pointer-events-none"
           aria-hidden="true"
         />
         <div className="relative">
-          <div className="flex flex-wrap items-center gap-3 mb-5">
-            <span className="rounded-full bg-orange-500/20 border border-orange-500/30 text-orange-400 px-3 py-1 text-[11px] font-mono font-semibold uppercase tracking-widest shadow-[0_0_10px_rgba(249,115,22,0.15)]">
+          <div className="flex flex-wrap items-center gap-2.5 sm:gap-3 mb-4 sm:mb-5">
+            <span className="rounded-full bg-orange-500/20 border border-orange-500/30 text-orange-400 px-2.5 sm:px-3 py-0.5 sm:py-1 text-[10px] sm:text-[11px] font-mono font-semibold uppercase tracking-widest shadow-[0_0_10px_rgba(249,115,22,0.15)]">
               FEATURED
             </span>
-            <span className="text-[11px] font-mono text-teal-400/90 font-medium uppercase tracking-[0.14em]">
+            <span className="text-[10px] sm:text-[11px] font-mono text-teal-400/90 font-medium uppercase tracking-[0.14em]">
               {project.category}
             </span>
           </div>
 
-          <h3 className="font-display text-2xl sm:text-3xl font-medium text-ink">
+          <h3 className="font-display text-xl xs:text-2xl sm:text-3xl font-medium text-ink">
             {project.name}
           </h3>
           <p className="mt-1 text-xs font-mono text-muted">{project.type}</p>
 
-          <p className="mt-5 max-w-2xl text-[15px] leading-relaxed text-muted">
+          <p className="mt-4 sm:mt-5 max-w-2xl text-sm xs:text-[15px] leading-relaxed text-muted">
             {project.description}
           </p>
 
-          <div className="mt-7 grid sm:grid-cols-2 gap-x-8 gap-y-2.5">
+          <div className="mt-6 grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-2.5">
             {project.features.map((f) => (
-              <div key={f} className="flex items-start gap-2.5 text-sm text-ink/90">
-                <span className="mt-2 h-1 w-1 rounded-full bg-accent2 shrink-0" />
+              <div key={f} className="flex items-start gap-2.5 text-xs sm:text-sm text-ink/90">
+                <span className="mt-1.5 sm:mt-2 h-1 w-1 rounded-full bg-accent2 shrink-0" />
                 {f}
               </div>
             ))}
           </div>
 
-          <div className="mt-7 flex flex-wrap gap-2">
+          <div className="mt-6 flex flex-wrap gap-1.5 sm:gap-2">
             {project.tech.map((t) => (
               <span
                 key={t}
-                className="rounded-md bg-surface2 border border-edge px-2.5 py-1 text-[11px] font-mono text-muted"
+                className="rounded-md bg-surface2 border border-edge px-2 sm:px-2.5 py-1 text-[10.5px] sm:text-[11px] font-mono text-muted"
               >
                 {t}
               </span>
@@ -97,8 +97,8 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
   const primaryHref = project.live || project.github;
   return (
     <Reveal delay={(index % 2) * 90}>
-      <article className="cursor-interactive group relative h-full rounded-2xl border border-edge2 bg-surface p-6 sm:p-7 flex flex-col transition-all duration-300 ease-out hover:-translate-y-2 hover:border-accent/50 hover:shadow-xl hover:shadow-accent/5">
-        <div className="flex items-center justify-between gap-3 mb-4">
+      <article className="cursor-interactive group relative h-full rounded-2xl border border-edge2 bg-surface p-5 sm:p-7 flex flex-col transition-all duration-300 ease-out hover:-translate-y-2 hover:border-accent/50 hover:shadow-xl hover:shadow-accent/5">
+        <div className="flex items-center justify-between gap-3 mb-3 sm:mb-4">
           <span className="text-[10px] font-mono text-teal-400/80 font-medium uppercase tracking-[0.12em]">
             {project.category}
           </span>
@@ -111,7 +111,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
 
         <div className="flex items-start justify-between gap-3">
           <div>
-            <h3 className="font-display text-xl font-medium text-ink transition-transform duration-300 group-hover:translate-x-0.5">
+            <h3 className="font-display text-lg xs:text-xl font-medium text-ink transition-transform duration-300 group-hover:translate-x-0.5">
               {project.name}
             </h3>
             <p className="mt-0.5 text-xs font-mono text-muted">{project.type}</p>
@@ -121,7 +121,7 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
               href={primaryHref}
               target="_blank"
               rel="noopener noreferrer"
-              className="shrink-0 inline-flex items-center gap-1 text-xs font-semibold text-accent opacity-0 -translate-x-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0"
+              className="shrink-0 inline-flex items-center gap-1 text-xs font-semibold text-accent opacity-100 sm:opacity-0 sm:-translate-x-1 transition-all duration-300 group-hover:opacity-100 group-hover:translate-x-0"
               aria-label={`View ${project.name} project`}
             >
               View <ArrowUpRight size={13} />
@@ -129,24 +129,24 @@ function ProjectCard({ project, index }: { project: Project; index: number }) {
           )}
         </div>
 
-        <p className="mt-4 text-sm leading-relaxed text-muted flex-1">
+        <p className="mt-3 sm:mt-4 text-xs xs:text-sm leading-relaxed text-muted flex-1">
           {project.description}
         </p>
 
-        <ul className="mt-5 space-y-1.5">
+        <ul className="mt-4 sm:mt-5 space-y-1.5">
           {project.features.slice(0, 3).map((f) => (
-            <li key={f} className="flex items-start gap-2.5 text-[13px] text-ink/85">
+            <li key={f} className="flex items-start gap-2.5 text-xs xs:text-[13px] text-ink/85">
               <span className="mt-1.5 h-1 w-1 rounded-full bg-accent shrink-0" />
               {f}
             </li>
           ))}
         </ul>
 
-        <div className="mt-5 flex flex-wrap gap-1.5">
+        <div className="mt-4 sm:mt-5 flex flex-wrap gap-1.5">
           {project.tech.slice(0, 5).map((t) => (
             <span
               key={t}
-              className="rounded-md bg-surface2 border border-edge px-2 py-1 text-[10.5px] font-mono text-muted transition-colors duration-300 group-hover:border-edge2 group-hover:text-ink/80"
+              className="rounded-md bg-surface2 border border-edge px-2 py-1 text-[10px] xs:text-[10.5px] font-mono text-muted transition-colors duration-300 group-hover:border-edge2 group-hover:text-ink/80"
             >
               {t}
             </span>
@@ -164,15 +164,15 @@ export default function Projects() {
   const rest = projects.filter((p) => !p.featured);
 
   return (
-    <section id="projects" className="py-24 md:py-32 border-t border-edge">
-      <div className="mx-auto max-w-7xl px-5 sm:px-8">
+    <section id="projects" className="py-16 sm:py-24 md:py-32 border-t border-edge">
+      <div className="mx-auto max-w-7xl px-4 sm:px-8">
         <Reveal>
           <SectionHeading tag="02 — PROJECTS" title="Selected Work" />
         </Reveal>
 
         {featured && <div className="mb-6">{<FeaturedCard project={featured} />}</div>}
 
-        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-6">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5 mt-6">
           {rest.map((p, i) => (
             <ProjectCard key={p.id} project={p} index={i} />
           ))}

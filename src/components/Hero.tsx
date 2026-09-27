@@ -5,6 +5,7 @@ import { profile } from "../data/portfolio";
 import profileImg from "../assets/profile.jpg";
 import resumeFile from "../assets/Sonu_Suman_Ojha_Resume.pdf";
 import Magnetic from "./Magnetic";
+import { usePointerFine } from "../hooks/usePointerFine";
 
 const socialLinks = [
   { href: profile.social.github, label: "GitHub", icon: GithubIcon },
@@ -26,8 +27,10 @@ const DELAY = {
 export default function Hero() {
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const heroRef = useRef<HTMLElement>(null);
+  const isFine = usePointerFine();
 
   useEffect(() => {
+    if (!isFine) return;
     const handleMouseMove = (e: MouseEvent) => {
       if (!heroRef.current) return;
       const rect = heroRef.current.getBoundingClientRect();
@@ -36,15 +39,15 @@ export default function Hero() {
       setMousePos({ x, y });
     };
     
-    window.addEventListener("mousemove", handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove, { passive: true });
     return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, []);
+  }, [isFine]);
 
   return (
     <section
       id="home"
       ref={heroRef}
-      className="relative min-h-[90vh] flex items-center pt-24 pb-12 overflow-hidden bg-[#0a0a0a]"
+      className="relative min-h-[90vh] flex items-center pt-20 sm:pt-28 pb-12 sm:pb-16 overflow-hidden bg-[#0a0a0a]"
     >
       {/* SVG Glitch Distortion Filter */}
       <svg className="hidden" aria-hidden="true">
@@ -81,12 +84,14 @@ export default function Hero() {
       />
 
       {/* Interactive Cinematic Highlight */}
-      <div
-        className="absolute inset-0 pointer-events-none transition-opacity duration-1000 ease-out -z-10"
-        style={{
-          background: `radial-gradient(800px circle at ${mousePos.x}px ${mousePos.y}px, rgba(144, 172, 196, 0.07), transparent 40%)`
-        }}
-      />
+      {isFine && (
+        <div
+          className="absolute inset-0 pointer-events-none transition-opacity duration-1000 ease-out -z-10"
+          style={{
+            background: `radial-gradient(800px circle at ${mousePos.x}px ${mousePos.y}px, rgba(144, 172, 196, 0.07), transparent 40%)`
+          }}
+        />
+      )}
       
       {/* Subtle Grid overlay */}
       <div
@@ -99,48 +104,48 @@ export default function Hero() {
         }}
       />
 
-      <div className="mx-auto w-full max-w-7xl px-5 sm:px-8 relative z-20 flex flex-col lg:flex-row items-center justify-between h-full">
+      <div className="mx-auto w-full max-w-7xl px-4 sm:px-8 relative z-20 flex flex-col lg:flex-row items-center justify-between h-full">
         
         {/* Left: copy */}
-        <div className="w-full lg:w-[60%] pt-10 lg:pt-0 pb-20 lg:pb-0 z-20 mix-blend-difference">
+        <div className="w-full lg:w-[60%] pt-6 sm:pt-10 lg:pt-0 pb-12 sm:pb-20 lg:pb-0 z-20 mix-blend-difference">
           <div 
-            className="stagger-in flex items-center gap-4 text-[11px] sm:text-xs font-mono tracking-[0.3em] text-[#90acc4]/80 uppercase mb-8" 
+            className="stagger-in flex items-center gap-3 sm:gap-4 text-[11px] sm:text-xs font-mono tracking-[0.25em] sm:tracking-[0.3em] text-[#90acc4]/80 uppercase mb-5 sm:mb-8" 
             style={{ animationDelay: `${DELAY.badge}ms` }}
           >
-            <span className="h-[1px] w-8 sm:w-12 bg-[#90acc4]/50" />
+            <span className="h-[1px] w-6 sm:w-12 bg-[#90acc4]/50" />
             HELLO, I AM
           </div>
 
           <h1
-            className="stagger-in font-editorial italic font-light text-7xl sm:text-8xl md:text-[8rem] lg:text-[10rem] leading-[0.85] tracking-tight text-[#a5c0d6] relative z-30 drop-shadow-2xl"
+            className="stagger-in font-editorial italic font-light text-4xl xs:text-5xl sm:text-7xl md:text-8xl lg:text-[10rem] leading-[0.88] sm:leading-[0.85] tracking-tight text-[#a5c0d6] relative z-30 drop-shadow-2xl break-words sm:break-normal"
             style={{ animationDelay: `${DELAY.name}ms` }}
           >
             Sonu Suman <br />
-            <span className="pl-12 md:pl-24">Ojha</span>
+            <span className="pl-4 xs:pl-8 sm:pl-16 md:pl-24">Ojha</span>
           </h1>
 
           <p
-            className="stagger-in mt-6 sm:mt-8 font-mono text-sm sm:text-base text-[#90acc4]/90 max-w-lg leading-relaxed"
+            className="stagger-in mt-5 sm:mt-8 font-mono text-xs xs:text-sm sm:text-base text-[#90acc4]/90 max-w-lg leading-relaxed"
             style={{ animationDelay: `${DELAY.subtitle}ms` }}
           >
             {profile.headline}
           </p>
 
           <p
-            className="stagger-in mt-6 max-w-xl text-[15px] sm:text-base leading-relaxed text-gray-400"
+            className="stagger-in mt-4 sm:mt-6 max-w-xl text-sm xs:text-[15px] sm:text-base leading-relaxed text-gray-400"
             style={{ animationDelay: `${DELAY.description}ms` }}
           >
             {profile.intro}
           </p>
 
           <div
-            className="stagger-in mt-10 flex flex-wrap items-center gap-4"
+            className="stagger-in mt-8 sm:mt-10 flex flex-col xs:flex-row items-stretch xs:items-center gap-3 sm:gap-4"
             style={{ animationDelay: `${DELAY.buttons}ms` }}
           >
             <Magnetic strength={6}>
               <a
                 href="#projects"
-                className="btn-glow group inline-flex items-center justify-center gap-2 rounded-none border border-[#90acc4]/30 bg-transparent text-[#e5e7eb] px-7 py-3.5 text-[13px] font-mono tracking-widest uppercase transition-all duration-300 hover:bg-[#90acc4]/10 hover:border-[#90acc4]/80 active:scale-[0.98]"
+                className="btn-glow group inline-flex items-center justify-center gap-2 rounded-none border border-[#90acc4]/30 bg-transparent text-[#e5e7eb] px-6 sm:px-7 py-3.5 text-[12px] sm:text-[13px] font-mono tracking-widest uppercase transition-all duration-300 hover:bg-[#90acc4]/10 hover:border-[#90acc4]/80 active:scale-[0.98] w-full xs:w-auto"
               >
                 View Work
                 <ArrowDown
@@ -153,7 +158,7 @@ export default function Hero() {
               <a
                 href={resumeFile}
                 download="Sonu_Suman_Ojha_Resume.pdf"
-                className="btn-glow group inline-flex items-center justify-center gap-2 rounded-none text-gray-400 px-5 py-3 text-[13px] font-mono tracking-widest uppercase transition-all duration-300 hover:text-[#e5e7eb] active:scale-[0.98]"
+                className="btn-glow group inline-flex items-center justify-center gap-2 rounded-none border border-transparent xs:border-none text-gray-400 px-5 py-3 text-[12px] sm:text-[13px] font-mono tracking-widest uppercase transition-all duration-300 hover:text-[#e5e7eb] active:scale-[0.98] w-full xs:w-auto"
               >
                 <FileDown size={14} className="transition-transform duration-300 group-hover:-translate-y-1" />
                 Resume
@@ -162,7 +167,7 @@ export default function Hero() {
           </div>
 
           <div
-            className="stagger-in mt-14 flex items-center gap-5"
+            className="stagger-in mt-10 sm:mt-14 flex items-center gap-4 sm:gap-5 flex-wrap"
             style={{ animationDelay: `${DELAY.socials}ms` }}
           >
             {socialLinks.map(({ href, label, icon: Icon }) => (
@@ -172,7 +177,7 @@ export default function Hero() {
                   target={href.startsWith("http") ? "_blank" : undefined}
                   rel={href.startsWith("http") ? "noopener noreferrer" : undefined}
                   aria-label={label}
-                  className="text-gray-500 transition-all duration-300 hover:scale-110 hover:text-[#90acc4]"
+                  className="text-gray-500 transition-all duration-300 hover:scale-110 hover:text-[#90acc4] p-1.5"
                 >
                   <Icon size={18} />
                 </a>
@@ -183,10 +188,10 @@ export default function Hero() {
 
         {/* Right: Dramatic profile photo with subtle Parallax */}
         <div 
-          className="absolute right-0 top-0 bottom-0 w-full lg:w-[70%] h-full pointer-events-none overflow-hidden -z-10 opacity-70 sm:opacity-90 lg:opacity-100 transition-transform duration-75 ease-linear"
-          style={{ 
+          className="absolute right-0 top-0 bottom-0 w-full lg:w-[70%] h-full pointer-events-none overflow-hidden -z-10 opacity-60 sm:opacity-80 lg:opacity-100 transition-transform duration-75 ease-linear"
+          style={isFine ? { 
             transform: `translate3d(${(mousePos.x - (typeof window !== 'undefined' ? window.innerWidth : 1000) / 2) * -0.015}px, ${(mousePos.y - (typeof window !== 'undefined' ? window.innerHeight : 800) / 2) * -0.015}px, 0)` 
-          }}
+          } : undefined}
         >
           <div className="relative w-full h-full">
             

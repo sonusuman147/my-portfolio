@@ -58,24 +58,24 @@ export default function Loader({ onComplete }: { onComplete: () => void }) {
           </div>
 
           {/* Body */}
-          <div className="p-6 sm:p-8 font-mono">
-            <div className="text-xl sm:text-2xl font-bold text-[#8b5cf6] mb-6 flex items-center">
+          <div className="p-4 xs:p-6 sm:p-8 font-mono">
+            <div className="text-lg xs:text-xl sm:text-2xl font-bold text-[#8b5cf6] mb-4 sm:mb-6 flex items-center">
               &lt;System.Init/&gt;
-              <span className="w-3 h-6 ml-2 bg-[#8b5cf6] animate-pulse" />
+              <span className="w-2.5 h-5 sm:w-3 sm:h-6 ml-2 bg-[#8b5cf6] animate-pulse" />
             </div>
 
-            <div className="space-y-2 mb-8 min-h-[140px] text-sm sm:text-[15px] text-gray-300">
+            <div className="space-y-2 mb-6 sm:mb-8 min-h-[120px] sm:min-h-[140px] text-xs xs:text-sm sm:text-[15px] text-gray-300">
               {lines.map((line, i) => (
                 <div key={i} className="flex items-start">
-                  <span className="text-gray-600 mr-4">[{new Date().toISOString().substring(11, 19)}]</span>
-                  <span>{line}</span>
+                  <span className="text-gray-600 mr-2 sm:mr-4 shrink-0 text-[10px] xs:text-xs">[{new Date().toISOString().substring(11, 19)}]</span>
+                  <span className="break-words min-w-0">{line}</span>
                 </div>
               ))}
             </div>
 
             {/* Progress Bar */}
             <div className="mt-auto">
-              <div className="flex justify-between text-xs text-gray-500 mb-2">
+              <div className="flex justify-between text-[11px] sm:text-xs text-gray-500 mb-2">
                 <span>BOOT_PROGRESS</span>
                 <span>{progress}%</span>
               </div>

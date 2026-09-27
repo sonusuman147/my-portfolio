@@ -73,18 +73,18 @@ export default function Navbar({
           : "bg-transparent border-b border-transparent shadow-none"
       }`}
     >
-      <nav className="mx-auto max-w-7xl px-5 sm:px-8 h-16 flex items-center justify-between">
+      <nav className="mx-auto max-w-7xl px-4 sm:px-8 h-16 flex items-center justify-between">
         <a
           href="#home"
-          className="flex items-center gap-2.5 shrink-0 group"
+          className="flex items-center gap-2.5 shrink group min-w-0"
           onClick={() => setOpen(false)}
         >
           <img
             src={logo}
             alt=""
-            className="h-8 w-8 rounded-full border border-edge2 transition-transform duration-300 group-hover:scale-105"
+            className="h-8 w-8 rounded-full border border-edge2 shrink-0 transition-transform duration-300 group-hover:scale-105"
           />
-          <span className="font-display text-[15px] sm:text-base font-medium text-ink tracking-tight">
+          <span className="font-display text-sm sm:text-base font-medium text-ink tracking-tight truncate max-w-[150px] xs:max-w-none">
             {profile.name}
           </span>
         </a>
@@ -113,7 +113,7 @@ export default function Navbar({
           ))}
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 shrink-0">
           <Magnetic strength={6}>
             <button
               onClick={toggleTheme}
@@ -137,18 +137,18 @@ export default function Navbar({
       </nav>
 
       <div
-        className={`lg:hidden overflow-hidden transition-[max-height,opacity] duration-300 ease-out bg-bg border-b border-edge ${
-          open ? "max-h-96 opacity-100" : "max-h-0 opacity-0 border-transparent"
+        className={`lg:hidden transition-all duration-300 ease-out bg-bg/95 backdrop-blur-lg border-b border-edge ${
+          open ? "max-h-[85vh] opacity-100 overflow-y-auto" : "max-h-0 opacity-0 overflow-hidden border-transparent"
         }`}
       >
-        <div className="flex flex-col gap-1 px-5 pb-5 pt-1">
+        <div className="flex flex-col gap-1 px-4 sm:px-6 pb-5 pt-2">
           {nav.map((item) => (
             <a
               key={item.href}
               href={item.href}
               onClick={() => setOpen(false)}
-              className={`px-3 py-2.5 rounded-lg text-[15px] font-medium transition-colors duration-200 ${
-                active === item.href ? "text-ink bg-surface2" : "text-muted hover:text-ink"
+              className={`px-3.5 py-2.5 rounded-lg text-sm xs:text-[15px] font-medium transition-colors duration-200 ${
+                active === item.href ? "text-ink bg-surface2 font-semibold" : "text-muted hover:text-ink"
               }`}
             >
               {item.label}
