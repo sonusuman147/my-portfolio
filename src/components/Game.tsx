@@ -1,129 +1,191 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { RefreshCw } from "lucide-react";
 import Reveal from "./Reveal";
 
-const CARDS = ["📊", "📈", "🤖", "🧠", "💻", "🐍"];
+const checkWinner = (squares: (string | null)[]) => {
+  const lines = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+    [0, 4, 8], [2, 4, 6]
+  ];
+  for (let i = 0; i < lines.length; i++) {
+    const [a, b, c] = lines[i];
+    if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+      return { winner: squares[a], line: [a, b, c] };
+    }
+  }
+  return null;
+};
 
-type CardState = {
-  id: number;
-  emoji: string;
-  isFlipped: boolean;
-  isMatched: boolean;
+const getComputerMove = (squares: (string | null)[]) => {
+  const lines = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8],
+    [0, 3, 6], [1, 4, 7], [2, 5, 8],
+    [0, 4, 8], [2, 4, 6]
+  ];
+
+  // Try to win or block
+  for (const player of ['O', 'X']) {
+    for (const [a, b, c] of lines) {
+      if (squares[a] === player && squares[b] === player && !squares[c]) return c;
+      if (squares[a] === player && !squares[b] && squares[c] === player) return b;
+      if (!squares[a] && squares[b] === player && squares[c] === player) return a;
+    }
+  }
+
+  // Take center
+  if (!squares[4]) return 4;
+
+  // Random
+  const available = squares.map((s, i) => s === null ? i : null).filter((s): s is number => s !== null);
+  if (available.length === 0) return -1;
+  return available[Math.floor(Math.random() * available.length)];
 };
 
 export default function Game() {
-  const initGameData = () => {
-    return [...CARDS, ...CARDS]
-      .sort(() => Math.random() - 0.5)
-      .map((emoji, index) => ({
-        id: index,
-        emoji,
-        isFlipped: false,
-        isMatched: false,
-      }));
-  };
-
-  const [cards, setCards] = useState<CardState[]>(initGameData);
-  const [flipped, setFlipped] = useState<number[]>([]);
+  const [board, setBoard] = useState<(string | null)[]>(Array(9).fill(null));
+  const [isPlayerTurn, setIsPlayerTurn] = useState(true);
   const [moves, setMoves] = useState(0);
-  const [won, setWon] = useState(false);
+  const [winner, setWinner] = useState<string | null>(null);
+  const [winningLine, setWinningLine] = useState<number[]>([]);
+  const [isDraw, setIsDraw] = useState(false);
 
   const initGame = () => {
-    setCards(initGameData());
-    setFlipped([]);
+    setBoard(Array(9).fill(null));
+    setIsPlayerTurn(true);
     setMoves(0);
-    setWon(false);
+    setWinner(null);
+    setWinningLine([]);
+    setIsDraw(false);
   };
 
-  const handleCardClick = (index: number) => {
-    if (flipped.length === 2 || cards[index].isFlipped || cards[index].isMatched) return;
+  useEffect(() => {
+    if (!isPlayerTurn && !winner && !isDraw) {
+      const timer = setTimeout(() => {
+        const move = getComputerMove(board);
+        if (move !== -1) {
+          handleMove(move, 'O');
+        }
+      }, 600);
+      return () => clearTimeout(timer);
+    }
+  }, [isPlayerTurn, board, winner, isDraw]);
 
-    setCards(prev => {
-      const next = [...prev];
-      next[index] = { ...next[index], isFlipped: true };
-      return next;
-    });
+  const handleMove = (index: number, player: string) => {
+    if (board[index] || winner || isDraw) return;
 
-    const newFlipped = [...flipped, index];
-    setFlipped(newFlipped);
+    const newBoard = [...board];
+    newBoard[index] = player;
+    setBoard(newBoard);
 
-    if (newFlipped.length === 2) {
-      setMoves((m) => m + 1);
-      const [first, second] = newFlipped;
-      
-      if (cards[first].emoji === cards[second].emoji) {
-        setCards(prev => prev.map((c, i) => 
-          (i === first || i === second) ? { ...c, isMatched: true, isFlipped: true } : c
-        ));
-        setFlipped([]);
-        
-        // Use functional state check for win condition because setCards is async
-        setCards(prev => {
-          if (prev.every(c => c.isMatched)) {
-            setWon(true);
-          }
-          return prev;
-        });
-      } else {
-        setTimeout(() => {
-          setCards(prev => prev.map((c, i) => 
-            (i === first || i === second) ? { ...c, isFlipped: false } : c
-          ));
-          setFlipped([]);
-        }, 800);
-      }
+    if (player === 'X') {
+      setMoves(m => m + 1);
+    }
+
+    const winResult = checkWinner(newBoard);
+    if (winResult) {
+      setWinner(winResult.winner);
+      setWinningLine(winResult.line);
+    } else if (newBoard.every(cell => cell !== null)) {
+      setIsDraw(true);
+    } else {
+      setIsPlayerTurn(player === 'O');
     }
   };
+
+  let statusText = "Your turn (X)";
+  let statusColor = "bg-sky-400";
+  let statusBorder = "border-sky-400/30";
+  
+  if (winner === 'X') {
+    statusText = "You win!";
+    statusColor = "bg-green-400";
+    statusBorder = "border-green-400/40";
+  } else if (winner === 'O') {
+    statusText = "Computer wins!";
+    statusColor = "bg-fuchsia-400";
+    statusBorder = "border-fuchsia-400/40";
+  } else if (isDraw) {
+    statusText = "Draw!";
+    statusColor = "bg-slate-400";
+    statusBorder = "border-slate-400/40";
+  } else if (!isPlayerTurn) {
+    statusText = "Computer thinking...";
+    statusColor = "bg-fuchsia-400";
+    statusBorder = "border-fuchsia-400/30";
+  }
 
   return (
     <section className="py-14 sm:py-20 md:py-28 border-t border-edge relative overflow-hidden bg-surface/30">
       <div className="mx-auto max-w-7xl px-4 sm:px-8">
         <Reveal>
-          <div className="text-center max-w-2xl mx-auto mb-8 sm:mb-12">
+          <div className="text-center max-w-2xl mx-auto mb-6 sm:mb-8">
             <h3 className="font-display text-2xl xs:text-3xl sm:text-4xl font-medium text-ink mb-2 sm:mb-3">
-              Take a break from the data.
+              Take a <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-400 to-blue-500">break</span> from the data.
             </h3>
             <p className="text-xs sm:text-sm text-muted font-mono">
-              Memory Match • {moves} moves
+              Tic-Tac-Toe • {moves} moves
             </p>
           </div>
         </Reveal>
 
         <Reveal delay={100}>
-          <div className="max-w-md mx-auto">
-            <div className="grid grid-cols-4 gap-2.5 xs:gap-3 sm:gap-4 mb-8 sm:mb-10 perspective-1000">
-              {cards.map((card, idx) => (
-                <button
-                  key={card.id}
-                  onClick={() => handleCardClick(idx)}
-                  className={`cursor-interactive relative aspect-square rounded-lg sm:rounded-xl flex items-center justify-center text-2xl sm:text-3xl transition-all duration-500 transform-style-3d ${
-                    card.isFlipped || card.isMatched
-                      ? "rotate-y-180 bg-surface2 border border-accent/40 shadow-inner"
-                      : "bg-surface border border-edge2 hover:border-accent/30 hover:-translate-y-1 hover:shadow-md"
-                  }`}
-                  aria-label="Memory Card"
-                >
-                  <span className={`transition-all duration-300 ${card.isFlipped || card.isMatched ? "opacity-100 scale-100 rotate-y-180" : "opacity-0 scale-50"}`}>
-                    {card.emoji}
-                  </span>
-                </button>
-              ))}
+          <div className="max-w-md mx-auto flex flex-col items-center">
+            
+            {/* Status Bubble */}
+            <div className={`mb-8 inline-flex items-center gap-2.5 px-4 py-1.5 rounded-full border bg-surface2/50 backdrop-blur-sm transition-all duration-300 ${statusBorder}`}>
+              <span className={`w-2 h-2 rounded-full shadow-[0_0_8px_currentColor] ${statusColor}`} />
+              <span className="text-xs sm:text-sm font-mono text-slate-300">{statusText}</span>
             </div>
 
-            <div className="flex justify-center min-h-[48px]">
-              {won ? (
-                <div className="text-accent font-medium animate-fadeUp flex flex-col sm:flex-row items-center justify-center text-center gap-2.5 sm:gap-4 bg-accent/10 px-4 sm:px-6 py-3 sm:py-2.5 rounded-2xl sm:rounded-full border border-accent/20 w-full sm:w-auto">
-                  <span className="text-xs sm:text-sm">Great job! You won in {moves} moves.</span>
-                  <button onClick={initGame} className="cursor-interactive px-3.5 py-1.5 rounded-full bg-accent text-[#0B0F1C] text-xs font-semibold hover:scale-105 transition-transform shrink-0">Play Again</button>
-                </div>
-              ) : (
-                <button
-                  onClick={initGame}
-                  className="cursor-interactive px-6 py-2.5 rounded-full border border-edge2 text-xs sm:text-sm text-muted hover:text-ink hover:border-edge transition-colors font-mono"
-                >
-                  Restart Game
-                </button>
-              )}
+            {/* Board */}
+            <div className="grid grid-cols-3 gap-3 sm:gap-4 w-full max-w-[260px] sm:max-w-[320px] mb-8">
+              {board.map((cell, idx) => {
+                const isWinningCell = winningLine.includes(idx);
+                const cellWinnerColor = winner === 'X' 
+                  ? 'border-sky-400/50 bg-sky-400/10 shadow-[0_0_20px_rgba(56,189,248,0.2)]' 
+                  : 'border-fuchsia-400/50 bg-fuchsia-400/10 shadow-[0_0_20px_rgba(232,121,249,0.2)]';
+                
+                return (
+                  <button
+                    key={idx}
+                    onClick={() => handleMove(idx, 'X')}
+                    disabled={!isPlayerTurn || cell !== null || winner !== null || isDraw}
+                    className={`cursor-interactive relative aspect-square rounded-xl sm:rounded-2xl flex items-center justify-center transition-all duration-300 
+                      ${cell ? 'bg-surface2 border border-edge' : 'bg-surface/40 border border-edge2 hover:border-sky-500/40 hover:-translate-y-0.5 hover:bg-surface2 hover:shadow-[0_4px_20px_rgba(56,189,248,0.1)]'}
+                      ${isWinningCell ? cellWinnerColor + ' scale-105 z-10' : ''}
+                      ${!isPlayerTurn && !cell && !winner && !isDraw ? 'opacity-80' : ''}
+                    `}
+                    aria-label={`Cell ${idx}`}
+                  >
+                    <div className="transition-transform duration-300">
+                      {cell === 'X' && (
+                        <svg className="w-10 h-10 sm:w-14 sm:h-14 text-sky-400 drop-shadow-[0_0_8px_rgba(56,189,248,0.6)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M18 6 6 18"/><path d="m6 6 12 12"/>
+                        </svg>
+                      )}
+                      {cell === 'O' && (
+                        <svg className="w-10 h-10 sm:w-14 sm:h-14 text-fuchsia-400 drop-shadow-[0_0_8px_rgba(232,121,249,0.6)]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                          <circle cx="12" cy="12" r="8.5"/>
+                        </svg>
+                      )}
+                    </div>
+                  </button>
+                )
+              })}
             </div>
+
+            {/* Controls */}
+            <div className="flex justify-center min-h-[48px]">
+              <button
+                onClick={initGame}
+                className="cursor-interactive group flex items-center gap-2 px-5 py-2.5 rounded-full border border-edge2 text-xs sm:text-sm text-muted hover:text-ink hover:border-edge hover:bg-surface2 transition-all font-mono shadow-sm hover:shadow-md"
+              >
+                <RefreshCw size={14} className="group-hover:rotate-180 transition-transform duration-500" />
+                Restart Game
+              </button>
+            </div>
+
           </div>
         </Reveal>
       </div>
